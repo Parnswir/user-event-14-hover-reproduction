@@ -1,14 +1,17 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event';
 import Home from '@/pages/index'
 
 describe('Home', () => {
-  it('renders a heading', () => {
+  it('renders a tooltip', async () => {
     render(<Home />)
 
-    const heading = screen.getByRole('heading', {
-      name: /welcome to next\.js!/i,
-    })
+    const trigger = screen.getByText('Nested Content');
 
-    expect(heading).toBeInTheDocument()
+    expect(screen.queryByText('Tooltip Content')).not.toBeInTheDocument();
+
+    await userEvent.hover(trigger);
+
+    expect(screen.getByText('Tooltip Content')).toBeInTheDocument();
   })
 })
